@@ -1,0 +1,38 @@
+<nav style="display:flex;justify-content:space-between;padding:15px;background:#111;color:white;">
+    <div>🛡️ PhishGuard</div>
+
+    <div>
+        <a href="/" style="margin:10px;color:white;">Home</a>
+        <a href="/about" style="margin:10px;color:white;">About</a>
+        <a href="/usecase" style="margin:10px;color:white;">Usecase</a>
+        <a href="/dashboard" style="margin:10px;color:white;">Dashboard</a>
+        <a href="/history" style="margin:10px;color:white;">History</a>
+        <a href="/help" style="margin:10px;color:white;">Help</a>
+    </div>
+
+    <a href="/download_guide" style="background:green;padding:5px 10px;color:white;">Download</a>
+</nav>
+<h2>History</h2>
+
+<form>
+    <input type="text" name="q" placeholder="Search URL">
+    <button>Search</button>
+</form>
+
+<table border="1">
+<tr>
+<th>URL</th>
+<th>Prediction</th>
+<th>Phish %</th>
+<th>Date</th>
+</tr>
+
+{% for row in data %}
+<tr>
+<td>{{ row[1] }}</td>
+<td>{{ row[2] }}</td>
+<td>{{ row[3] }}</td>
+<td>{{ row[4] }}</td>
+</tr>
+{% endfor %}
+</table>
