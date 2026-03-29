@@ -1,16 +1,200 @@
-<nav style="display:flex;justify-content:space-between;padding:15px;background:#111;color:white;">
-    <div>🛡️ PhishGuard</div>
+<!DOCTYPE html>
 
-    <div>
-        <a href="/" style="margin:10px;color:white;">Home</a>
-        <a href="/about" style="margin:10px;color:white;">About</a>
-        <a href="/usecase" style="margin:10px;color:white;">Usecase</a>
-        <a href="/dashboard" style="margin:10px;color:white;">Dashboard</a>
-        <a href="/history" style="margin:10px;color:white;">History</a>
-        <a href="/help" style="margin:10px;color:white;">Help</a>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Help & Support - PhishGuard</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #020617);
+    color: white;
+    display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background: #020617;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    color: #38bdf8;
+}
+
+.sidebar a {
+    display: block;
+    margin: 15px 0;
+    color: #94a3b8;
+    text-decoration: none;
+}
+
+.sidebar a:hover {
+    color: white;
+}
+
+/* MAIN */
+.main {
+    flex: 1;
+    padding: 20px 40px;
+}
+
+/* Header */
+h1 {
+    text-align: center;
+}
+
+.subtitle {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 20px;
+}
+
+/* Container */
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+/* Card */
+.card {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 15px;
+}
+
+/* Chat */
+.chat-box {
+    height: 350px;
+    overflow-y: auto;
+    background: rgba(0,0,0,0.3);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.msg {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 70%;
+}
+
+.user {
+    background: #2563eb;
+    margin-left: auto;
+}
+
+.bot {
+    background: #16a34a;
+}
+
+/* Input */
+.input-area {
+    display: flex;
+    margin-top: 10px;
+}
+
+input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+}
+
+button {
+    padding: 10px;
+    background: #22c55e;
+    border: none;
+    margin-left: 5px;
+    border-radius: 8px;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+    <h2>PhishGuard</h2>
+    <a href="/">Home</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/history">History</a>
+    <a href="/help">Help</a>
+</div>
+
+<!-- MAIN CONTENT -->
+
+<div class="main">
+
+<h1>🆘 Help & Support</h1>
+<p class="subtitle">Get guidance, understand results, and chat with AI assistant</p>
+
+<div class="container">
+
+```
+<div class="card">
+    <h3>📌 How to Use</h3>
+    <p>1. Enter a website URL</p>
+    <p>2. Click "Scan"</p>
+    <p>3. View result (Safe / Phishing)</p>
+    <p>4. Check risk level</p>
+</div>
+
+<div class="card">
+    <h3>❓ FAQ</h3>
+    <p><b>Phishing:</b> Fake website stealing your data</p>
+    <p><b>Safe:</b> Trusted and secure website</p>
+    <p><b>Risk Level:</b> Indicates how dangerous a website is</p>
+</div>
+
+<div class="card">
+    <h3>💬 Chat with AI</h3>
+
+    <div class="chat-box" id="chat"></div>
+
+    <div class="input-area">
+        <input type="text" id="msg" placeholder="Ask anything...">
+        <button onclick="send()">Send</button>
     </div>
+</div>
+```
 
-    <a href="/download_guide" style="background:green;padding:5px 10px;color:white;">Download</a>
-</nav>
-<h1>Help</h1>
-<p>Enter URL → Click Scan → Get result</p>
+</div>
+
+</div>
+
+<script>
+function send() {
+    let input = document.getElementById("msg");
+    let chat = document.getElementById("chat");
+
+    let text = input.value;
+    if (!text) return;
+
+    chat.innerHTML += `<div class="msg user">${text}</div>`;
+
+    fetch('/chat', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({message: text})
+    })
+    .then(res => res.json())
+    .then(data => {
+        chat.innerHTML += `<div class="msg bot">${data.reply}</div>`;
+        chat.scrollTop = chat.scrollHeight;
+    });
+
+    input.value = "";
+}
+</script>
+
+</body>
+</html>
