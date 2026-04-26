@@ -1,4 +1,4 @@
-<nav style="display:flex;justify-content:space-between;padding:15px;background:#111;color:white;">
+<!-- <nav style="display:flex;justify-content:space-between;padding:15px;background:#111;color:white;">
     <div>🛡️ PhishGuard</div>
 
     <div>
@@ -35,4 +35,215 @@
 <td>{{ row[4] }}</td>
 </tr>
 {% endfor %}
+</table> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>History - PhishGuard</title>
+
+<!-- FONTS -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a3d;
+    --accent: #00f5a0;
+    --accent2: #00d9f5;
+    --danger: #ff3d71;
+    --text: #e8e8f0;
+    --text-dim: #8888aa;
+    --mono: 'Space Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+}
+
+/* BODY */
+body {
+    margin: 0;
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+}
+
+/* GRID BACKGROUND */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0,245,160,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,245,160,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 240px;
+    background: rgba(18,18,26,0.7);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-right: 1px solid var(--border);
+}
+
+/* LOGO */
+.logo {
+    font-family: var(--mono);
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.logo .phish { color: #e8e8f0; }
+.logo .guard {
+    color: #00f5a0;
+    text-shadow: 0 0 30px rgba(0,245,160,0.5);
+}
+
+/* SIDEBAR LINKS */
+.sidebar a {
+    display: block;
+    margin: 15px 0;
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.sidebar a:hover {
+    color: var(--accent);
+    background: rgba(0,245,160,0.08);
+}
+
+/* MAIN */
+.main {
+    flex: 1;
+    padding: 30px;
+    position: relative;
+    z-index: 1;
+}
+
+/* HEADER */
+h1 {
+    font-family: var(--mono);
+}
+
+/* SEARCH BOX */
+.search-box {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+}
+
+.search-box button {
+    background: var(--accent);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-family: var(--mono);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* CARD */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th {
+    background: var(--surface2);
+    color: var(--text-dim);
+    padding: 12px;
+}
+
+td {
+    padding: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+}
+
+/* STATUS COLORS */
+.safe { color: var(--accent); }
+.phish { color: var(--danger); }
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h2 class="logo">
+        <span class="phish">Phish</span><span class="guard">Guard</span>
+    </h2>
+
+    <a href="/">Home</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/history">History</a>
+    <a href="/help">Help</a>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<h1>📜 History</h1>
+
+<div class="search-box">
+    <form method="GET" action="/history" style="display:flex;width:100%;">
+        <input type="text" name="q" value="{{ request.args.get('q','') }}" placeholder="Search URL">
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+<div class="card">
+
+<table>
+<tr>
+<th>URL</th>
+<th>Status</th>
+<th>Phish %</th>
+<th>Date</th>
+</tr>
+
+{% for row in data %}
+<tr>
+<td>{{ row[1] }}</td>
+
+<td class="{% if row[2]=='PHISHING' %}phish{% else %}safe{% endif %}">
+{{ row[2] }}
+</td>
+
+<td>{{ row[3] }}%</td>
+<td>{{ row[4] }}</td>
+</tr>
+{% endfor %}
+
 </table>
+
+</div>
+
+</div>
+
+</body>
+</html>

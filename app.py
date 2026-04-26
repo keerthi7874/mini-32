@@ -157,16 +157,27 @@ def dashboard():
 # ───────── HISTORY ─────────
 @app.route('/history')
 def history():
-    conn = sqlite3.connect("history.db")
-    c = conn.cursor()
+    search_query = request.args.get('q')
 
-    c.execute("SELECT * FROM scans ORDER BY id DESC")
-    data = c.fetchall()
+    conn = sqlite3.connect('history.db')   # ✅ correct DB
+    cursor = conn.cursor()
 
+    if search_query:
+        cursor.execute("""
+            SELECT * FROM scans
+            WHERE url LIKE ?
+            ORDER BY date DESC
+        """, ('%' + search_query + '%',))
+    else:
+        cursor.execute("""
+            SELECT * FROM scans
+            ORDER BY date DESC
+        """)
+
+    data = cursor.fetchall()
     conn.close()
 
     return render_template('history.html', data=data)
-
 
 # ───────── BATCH SCAN ─────────
 @app.route('/batch', methods=['POST'])
